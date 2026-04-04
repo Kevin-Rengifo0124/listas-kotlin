@@ -5,25 +5,27 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.tallerlistas.ui.theme.TallerListasTheme
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.tallerlistas.ui.theme.ProductAppTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            TallerListasTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+            ProductAppTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    AppNavigation()
                 }
             }
         }
@@ -31,17 +33,34 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+fun AppNavigation() {
+    val navController = rememberNavController()
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    TallerListasTheme {
-        Greeting("Android")
+    // Un solo ViewModel compartido entre todas las pantallas
+    val viewModel: ProductoViewModel = viewModel()
+
+    NavHost(navController = navController, startDestination = Routes.HOME) {
+
+        composable(Routes.HOME) {
+            HomeScreen(
+                viewModel          = viewModel,
+                onNavigateRegister = { navController.navigate(Routes.REGISTER) },
+                onNavigateList     = { navController.navigate(Routes.LIST) }
+            )
+        }
+
+        composable(Routes.REGISTER) {
+            RegisterScreen(
+                viewModel = viewModel,
+                onBack    = { navController.popBackStack() }
+            )
+        }
+
+        composable(Routes.LIST) {
+            ProductListScreen(
+                viewModel = viewModel,
+                onBack    = { navController.popBackStack() }
+            )
+        }
     }
 }
