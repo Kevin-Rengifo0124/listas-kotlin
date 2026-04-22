@@ -21,9 +21,9 @@ data class Producto(
     val tipo: TipoProducto
 )
 
-
 object Routes {
     const val HOME     = "home"
     const val REGISTER = "register"
     const val LIST     = "list"
+    const val CAMERA   = "camera"   
 }
