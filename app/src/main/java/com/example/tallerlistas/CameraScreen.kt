@@ -67,8 +67,10 @@ fun CameraScreen(onBack: () -> Unit) {
         contract = ActivityResultContracts.RequestPermission()
     ) { concedido ->
         if (concedido) {
-            imagenUri = crearUriImagen(context)
-            launcherCamara.launch(imagenUri)
+            crearUriImagen(context)?.let { uri ->
+                imagenUri = uri
+                launcherCamara.launch(uri)   // uri es Uri (no nulo)
+            }
         }
     }
 
@@ -79,8 +81,10 @@ fun CameraScreen(onBack: () -> Unit) {
                 Manifest.permission.CAMERA
             ) == PackageManager.PERMISSION_GRANTED
         ) {
-            imagenUri = crearUriImagen(context)
-            launcherCamara.launch(imagenUri)
+            crearUriImagen(context)?.let { uri ->
+                imagenUri = uri
+                launcherCamara.launch(uri)   // uri es Uri (no nulo)
+            }
         } else {
             launcherPermiso.launch(Manifest.permission.CAMERA)
         }

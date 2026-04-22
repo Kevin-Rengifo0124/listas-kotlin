@@ -35,8 +35,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
-
-    // Un solo ViewModel compartido entre todas las pantallas
     val viewModel: ProductoViewModel = viewModel()
 
     NavHost(navController = navController, startDestination = Routes.HOME) {
@@ -45,7 +43,8 @@ fun AppNavigation() {
             HomeScreen(
                 viewModel          = viewModel,
                 onNavigateRegister = { navController.navigate(Routes.REGISTER) },
-                onNavigateList     = { navController.navigate(Routes.LIST) }
+                onNavigateList     = { navController.navigate(Routes.LIST) },
+                onNavigateCamera   = { navController.navigate(Routes.CAMERA) }   // 📷 nuevo
             )
         }
 
@@ -61,6 +60,11 @@ fun AppNavigation() {
                 viewModel = viewModel,
                 onBack    = { navController.popBackStack() }
             )
+        }
+
+        // 📷 Pantalla de cámara
+        composable(Routes.CAMERA) {
+            CameraScreen(onBack = { navController.popBackStack() })
         }
     }
 }

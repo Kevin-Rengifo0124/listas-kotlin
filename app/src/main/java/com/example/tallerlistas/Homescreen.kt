@@ -1,12 +1,12 @@
 package com.example.tallerlistas
 
-import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -34,7 +34,8 @@ val TextMuted = Color(0xFF9090BB)
 fun HomeScreen(
     viewModel: ProductoViewModel,
     onNavigateRegister: () -> Unit,
-    onNavigateList: () -> Unit
+    onNavigateList: () -> Unit,
+    onNavigateCamera: () -> Unit         // 📷 nuevo parámetro
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val totalProductos = uiState.productos.size
@@ -44,6 +45,7 @@ fun HomeScreen(
             .fillMaxSize()
             .background(Brush.verticalGradient(listOf(DarkBg, Color(0xFF0D0D2B), CardDark2)))
     ) {
+        // Destellos decorativos de fondo
         Box(
             modifier = Modifier
                 .size(320.dp)
@@ -68,6 +70,7 @@ fun HomeScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
+            // Ícono de la app
             Box(
                 modifier = Modifier
                     .size(90.dp)
@@ -118,10 +121,22 @@ fun HomeScreen(
                 onClick  = onNavigateList
             )
 
+            Spacer(Modifier.height(16.dp))
+
+            // 📷 Tarjeta nueva — Cámara
+            HomeActionCard(
+                emoji    = "📷",
+                title    = "Cámara",
+                subtitle = "Toma y guarda fotos",
+                gradient = Brush.linearGradient(listOf(Color(0xFF00BCD4), Color(0xFF0097A7))),
+                icon     = Icons.Default.CameraAlt,
+                onClick  = onNavigateCamera
+            )
+
             Spacer(Modifier.height(48.dp))
 
             Text(
-                "4 categorías disponibles  •  v2.0 ViewModel",
+                "4 categorías  •  Cámara  •  v2.1",
                 fontSize = 12.sp,
                 color = TextMuted.copy(0.5f)
             )

@@ -25,5 +25,5 @@ object Routes {
     const val HOME     = "home"
     const val REGISTER = "register"
     const val LIST     = "list"
-    const val CAMERA   = "camera"   
+    const val CAMERA   = "camera"
 }
